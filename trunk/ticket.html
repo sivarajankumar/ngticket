@@ -1,0 +1,38 @@
+   <script id="ticket.html" type="text/ng-template">
+      <!-- The title of the ion-view will be shown on the navbar -->
+      <ion-view title="Ticket" hide-back-button="false">
+
+        <ion-nav-buttons side="right">
+         <a class="button icon ion-navicon" ui-sref="listaTicket"></a>
+        </ion-nav-buttons> 
+
+
+        <ion-content>
+
+
+            
+
+             <ion-slide-box show-pager="false" active-slide="(oggi.dd-1)" on-slide-changed="slideChanged($index)" > 
+            
+
+                  <ion-slide  ng-repeat="giorno in slides">
+                    <div class="center">
+                      <h3>{{giorno.nomeMese}}</h3>      
+                      <h1>{{giorno.numeroGiorno}}</h1>
+                       <h3>{{giorno.nomeGiorno}}</h3>
+                    </div>
+
+                  </ion-slide>
+
+            </ion-slide-box>
+
+         
+            <span class="center"><button class="button button-block button-stable" ng-click="insertTicket()">ticket</button></span>   
+
+      </ion-content>
+
+  
+  
+      </ion-view> 
+   
+    </script>    

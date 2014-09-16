@@ -1,0 +1,17 @@
+        <script id="home" type="text/ng-template">
+      <ion-view  title="'Home'">
+      <ion-content ng-controller="ticketCtrl">
+        
+       
+         <div class="center">
+          <h3>{{oggi.nomeMese}}</h3>      
+          <h1>{{oggi.numeroGiorno}}</h1>
+          <h3>{{oggi.nomeGiorno}}</h3>
+          <h2>{{oggi.yyyy}}{{oggi.mm}}{{oggi.dd}}</h2>
+        </div>
+        <span class="center"><button class="button button-block button-stable" ng-click="insertTicket()">ticket</button></span>     
+
+      </ion-content>
+      
+      </ion-view>
+    </script>

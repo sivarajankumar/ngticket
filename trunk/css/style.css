@@ -1,0 +1,25 @@
+/* Empty. Add your own CSS if you like */
+.center{
+	text-align : center
+}
+h3{
+	font-size: 3em;
+	line-height: 100%;
+}
+h1{
+	font-size: 14em;
+	line-height: 90%;
+}
+.list .item.item-accordion {
+  line-height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.09s all linear;
+}
+.list .item.item-accordion.ng-hide {
+  line-height: 0px;
+}
+.list .item.item-accordion.ng-hide-add,
+.list .item.item-accordion.ng-hide-remove {
+  display: block !important;
+}
