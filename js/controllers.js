@@ -83,15 +83,6 @@ angular.module('ticket.controllers', ['ticket.services'])
 
 
 
-  if(typeof $scope.slidesYear == 'undefined'){
-    $scope.slidesYear=['2010','2011','2012','2010','2010','2010','2010',];
-    
-    $scope.oggi = Util.today();
-    mese = ($scope.oggi.mm - 1);
-    $scope.slides = Util.createMonth( mese  , $scope.oggi.yyyy);
-    $currentSlideIndex = $scope.oggi.dd
-
-  }
 
   $scope.insertTicket = function() {
 
@@ -129,24 +120,90 @@ angular.module('ticket.controllers', ['ticket.services'])
 
 
 
+})
+
+
+
+
+
+.controller('CalendarCtrl', function($scope) {
+
+    // these are labels for the days of the week
+    // these are labels for the days of the week
+    cal_days_labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    // these are human-readable month name labels, in order
+    cal_months_labels = ['January', 'February', 'March', 'April',
+                         'May', 'June', 'July', 'August', 'September',
+                         'October', 'November', 'December'];
+
+    // these are the days of the week for each month, in order
+    cal_days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+
+    $scope.calendario = {
+             anno : ''
+           , mese : ''
+           , giorni : []
+
+    };
+
+// this is the current date
+    cal_current_date = new Date(); 
+
+    var month ;
+    var year;
+
+    month = (isNaN(month) || month == null) ? cal_current_date.getMonth() : month;
+   year  = (isNaN(year) || year == null) ? cal_current_date.getFullYear() : year;
+
+
+
+  // get first day of month
+  var firstDay = new Date(year, month, 1);
+  var startingDay = firstDay.getDay();
+  
+  // find number of days in month
+  var monthLength = cal_days_in_month[month];
+  
+  // compensate for leap year
+  if (month == 1) { // February only!
+    if((year % 4 == 0 && year % 100 != 0) || year % 400 == 0){
+      monthLength = 29;
+    }
+  }
+  
+  // do the header
+  var monthName = cal_months_labels[month]
+  
+  
+  $scope.calendario.anno = year;
+  $scope.calendario.mese = monthName;
+  
+  
+  // fill in the days
+  var day = 1;
+  // this loop is for is weeks (rows)
+  for (var i = 0; i < 9; i++) {
+    // this loop is for weekdays (cells)
+    for (var j = 0; j <= 6; j++) { 
+      
+      if (day <= monthLength && (i > 0 || j >= startingDay)) {
+        $scope.calendario.giorni.push(''+day+'');
+        day++;
+      } else {
+        $scope.calendario.giorni.push('');
+      }
+      
+    }
+    // stop making rows if we've run out of days
+    if (day > monthLength) {
+      break;
+    } 
+  }
+  
+
+
+    
 });
 
-
-/*
-
-
-
-.controller('DocumentCtrl', function($scope, Document) {
-    $scope.documents = [];
-    $scope.document = null;
-    // Get all the documents
-    Document.all().then(function(documents){
-        $scope.documents = documents;
-    });
-    // Get one document, example with id = 2
-    Document.getById(2).then(function(document) {
-        $scope.document = document;
-    });
-});
-
-*/

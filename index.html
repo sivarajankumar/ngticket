@@ -40,8 +40,11 @@
       <!-- The title of the ion-view will be shown on the navbar -->
       <ion-view title="Ticket" hide-back-button="false">
 
+        <ion-nav-buttons side="left">
+           <a class="button icon ion-navicon" ui-sref="calendario"></a>
+        </ion-nav-buttons> 
         <ion-nav-buttons side="right">
-         <a class="button icon ion-navicon" ui-sref="listaTicket"></a>
+          <a class="button icon ion-navicon" ui-sref="listaTicket"></a>
         </ion-nav-buttons> 
 
 
@@ -53,7 +56,7 @@
 
                   <ion-slide  ng-repeat="giorno in slides">
                     <div class="center">
-                      <h3>{{giorno.yyyy}}&nbsp;{{giorno.nomeMese}}</h3>      
+                      <h3>{{giorno.nomeMese}}</h3>      
                       <h1>{{giorno.numeroGiorno}}</h1>
                        <h3>{{giorno.nomeGiorno}}</h3>
                     </div>
@@ -102,6 +105,98 @@
       </ion-view>
     </script> 
 
+    <script id="calendario.html" type="text/ng-template">
+      <!-- The title of the ion-view will be shown on the navbar -->
+      <ion-view title="calendario">
+                
+        <ion-nav-buttons side="left">
+         <a class="button icon ion-ios7-arrow-back" ui-sref="ticket"></a>
+        </ion-nav-buttons>
+
+        <ion-content>
+          <div class="row">
+            <div class="col">D</div>
+            <div class="col">L</div>
+            <div class="col">M</div>
+            <div class="col">M</div>
+            <div class="col">G</div>
+            <div class="col">V</div>
+            <div class="col">S</div>
+          </div>
+          <div class="row">
+            <div class="col">{{calendario.giorni[0]}}</div>
+            <div class="col">{{calendario.giorni[1]}}</div>
+            <div class="col">{{calendario.giorni[2]}}</div>
+            <div class="col">{{calendario.giorni[3]}}</div>
+            <div class="col">{{calendario.giorni[4]}}</div>
+            <div class="col">{{calendario.giorni[5]}}</div>
+            <div class="col">{{calendario.giorni[6]}}</div>
+          </div>
+          <div class="row">
+            <div class="col">{{calendario.giorni[7]}}</div>
+            <div class="col">{{calendario.giorni[8]}}</div>
+            <div class="col">{{calendario.giorni[9]}}</div>
+            <div class="col">{{calendario.giorni[10]}}</div>
+            <div class="col">{{calendario.giorni[11]}}</div>
+            <div class="col">{{calendario.giorni[12]}}</div>
+            <div class="col">{{calendario.giorni[13]}}</div>
+          </div>
+          <div class="row">
+            <div class="col">{{calendario.giorni[14]}}</div>
+            <div class="col">{{calendario.giorni[15]}}</div>
+            <div class="col">{{calendario.giorni[16]}}</div>
+            <div class="col">{{calendario.giorni[17]}}</div>
+            <div class="col">{{calendario.giorni[18]}}</div>
+            <div class="col">{{calendario.giorni[19]}}</div>
+            <div class="col">{{calendario.giorni[20]}}</div>
+          </div>
+          <div class="row">
+            <div class="col">{{calendario.giorni[21]}}</div>
+            <div class="col">{{calendario.giorni[22]}}</div>
+            <div class="col">{{calendario.giorni[23]}}</div>
+            <div class="col">{{calendario.giorni[24]}}</div>
+            <div class="col">{{calendario.giorni[25]}}</div>
+            <div class="col">{{calendario.giorni[26]}}</div>
+            <div class="col">{{calendario.giorni[27]}}</div>
+          </div>                    
+          <div class="row">
+            <div class="col">{{calendario.giorni[28]}}</div>
+            <div class="col">{{calendario.giorni[29]}}</div>
+            <div class="col">{{calendario.giorni[30]}}</div>
+            <div class="col">{{calendario.giorni[31]}}</div>
+            <div class="col">{{calendario.giorni[32]}}</div>
+            <div class="col">{{calendario.giorni[33]}}</div>
+            <div class="col">{{calendario.giorni[34]}}</div>
+          </div>  
+                               
+
+        </ion-content>
+
+
+
+
+
+        <!--          
+        <ion-content>
+              <ion-list>
+                <div ng-repeat="group in groups">
+                  <ion-item class="item-stable"
+                            ng-click="toggleGroup(group)"
+                            ng-class="{active: isGroupShown(group)}">                                        
+                    {{group.month}}&nbsp;{{group.yyyyy}}<span class="badge badge-assertive">{{group.items.length}}</span>
+                  </ion-item>
+                  <ion-item class="item-accordion"
+                            ng-repeat="item in group.items"
+                            ng-show="isGroupShown(group)">
+                        {{item.nomeGiorno}}&nbsp;{{item.numeroGiorno}}
+                        <ion-option-button class="button-stable icon ion-close-round" ng-click="remove(item)">
+                        </ion-option-button>
+                  </ion-item>
+                </div>
+              </ion-list>
+        </ion-content> -->
+      </ion-view>
+    </script> 
 
 <!--
     <ion-pane>
