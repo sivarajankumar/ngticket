@@ -12,6 +12,11 @@ angular.module('ticket.navigation', [])
         templateUrl: 'listaTicket.html',
         controller : "listaTicketCtrl" 
       })
+      .state('calendario', {
+        url: '/tre',
+        templateUrl: 'calendario.html',
+        controller : "CalendarCtrl"
+      })
   
   $urlRouterProvider.otherwise("/uno");
 })
