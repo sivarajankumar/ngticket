@@ -173,6 +173,63 @@ angular.module('ticket.services', ['ticket.config'])
               , nomeMese : todayMonth
               , nomeGiorno : todayName
               , numeroGiorno : todayNumber } ;
+   }, 
+
+   getCalendar :  function(year,month){
+
+      var calendario = {
+             anno : ''
+           , mese : ''
+           , meseNN : 0
+           , giorni : []
+
+      };
+
+      calendario.meseNN = month;
+            // get first day of month
+      var firstDay = new Date(year, month, 1);
+      var startingDay = firstDay.getDay();
+      
+      // find number of days in month
+      var monthLength = cal_days_in_month[month];
+      
+      // compensate for leap year
+      if (month == 1) { // February only!
+        if((year % 4 == 0 && year % 100 != 0) || year % 400 == 0){
+          monthLength = 29;
+        }
+      }
+      
+      // do the header
+      var monthName = cal_months_labels[month]
+      
+      
+      calendario.anno = year;
+      calendario.mese = monthName;
+      
+      
+      // fill in the days
+      var day = 1;
+      // this loop is for is weeks (rows)
+      for (var i = 0; i < 9; i++) {
+        // this loop is for weekdays (cells)
+        for (var j = 0; j <= 6; j++) { 
+          
+          if (day <= monthLength && (i > 0 || j >= startingDay)) {
+            calendario.giorni.push(''+day+'');
+            day++;
+          } else {
+            calendario.giorni.push('');
+          }
+          
+        }
+        // stop making rows if we've run out of days
+        if (day > monthLength) {
+          break;
+        } 
+      }
+
+      return calendario;
    }
 
 
