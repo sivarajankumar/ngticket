@@ -107,13 +107,16 @@
 
     <script id="calendario.html" type="text/ng-template">
       <!-- The title of the ion-view will be shown on the navbar -->
-      <ion-view title="calendario">
+      <ion-view title="{{calendario.mese}}&nbsp;{{calendario.anno}}">
                 
         <ion-nav-buttons side="left">
          <a class="button icon ion-ios7-arrow-back" ui-sref="ticket"></a>
         </ion-nav-buttons>
-
+        <ion-nav-buttons side="right">
+         <a class="button icon ion-ios7-arrow-right" ui-sref="ticket"></a>
+        </ion-nav-buttons>
         <ion-content>
+
           <div class="row">
             <div class="col">D</div>
             <div class="col">L</div>
