@@ -67,9 +67,21 @@ angular.module('ticket.controllers', ['ticket.services'])
 
 
 
-.controller('ticketCtrl', function($scope,  Util, localTicketFactory,$ionicSlideBoxDelegate,$timeout,$state) {
+.controller('ticketCtrl', function($scope,  Util, localTicketFactory,$ionicSlideBoxDelegate,$timeout,$state, $stateParams ) {
 
 
+
+  console.log($stateParams.giorno);
+  console.log($stateParams.mese);
+  console.log($stateParams.anno);
+
+  var giornoSelezionato;
+
+  if ($stateParams.giorno == ''){
+      giornoSelezionato = new Date();
+  } else {
+      giornoSelezionato = new Date($stateParams.giorno,$stateParams.mese,$stateParams.anno);
+  }
 
   if(typeof $scope.slides == 'undefined'){
     $scope.slides=[];
@@ -126,7 +138,7 @@ angular.module('ticket.controllers', ['ticket.services'])
 
 
 
-.controller('CalendarCtrl', function($scope) {
+.controller('CalendarCtrl', function($scope, Util) {
 
     // these are labels for the days of the week
     // these are labels for the days of the week
@@ -144,10 +156,12 @@ angular.module('ticket.controllers', ['ticket.services'])
     $scope.calendario = {
              anno : ''
            , mese : ''
+           , meseNN : 0
            , giorni : []
 
     };
 
+    
 // this is the current date
     cal_current_date = new Date(); 
 
@@ -155,54 +169,58 @@ angular.module('ticket.controllers', ['ticket.services'])
     var year;
 
     month = (isNaN(month) || month == null) ? cal_current_date.getMonth() : month;
-   year  = (isNaN(year) || year == null) ? cal_current_date.getFullYear() : year;
+    year  = (isNaN(year) || year == null) ? cal_current_date.getFullYear() : year;
 
 
+    $scope.calendario = Util.getCalendar(year,month);
+    
+    $scope.nextMonth = function() {
 
-  // get first day of month
-  var firstDay = new Date(year, month, 1);
-  var startingDay = firstDay.getDay();
-  
-  // find number of days in month
-  var monthLength = cal_days_in_month[month];
-  
-  // compensate for leap year
-  if (month == 1) { // February only!
-    if((year % 4 == 0 && year % 100 != 0) || year % 400 == 0){
-      monthLength = 29;
-    }
-  }
-  
-  // do the header
-  var monthName = cal_months_labels[month]
-  
-  
-  $scope.calendario.anno = year;
-  $scope.calendario.mese = monthName;
-  
-  
-  // fill in the days
-  var day = 1;
-  // this loop is for is weeks (rows)
-  for (var i = 0; i < 9; i++) {
-    // this loop is for weekdays (cells)
-    for (var j = 0; j <= 6; j++) { 
+      var anno = $scope.calendario.anno;
+      var mese = $scope.calendario.meseNN;
+
+      var now = new Date(anno, mese, 1);
+
       
-      if (day <= monthLength && (i > 0 || j >= startingDay)) {
-        $scope.calendario.giorni.push(''+day+'');
-        day++;
+
+      if (now.getMonth() == 11) {
+          var current = new Date(now.getFullYear() + 1, 0, 1);
       } else {
-        $scope.calendario.giorni.push('');
+          var current = new Date(now.getFullYear(), now.getMonth() + 1, 1);
       }
-      
-    }
-    // stop making rows if we've run out of days
-    if (day > monthLength) {
-      break;
-    } 
-  }
-  
 
+      var year = current.getFullYear();
+      var month = current.getMonth();
+
+      $scope.calendario = Util.getCalendar(year,month);
+
+      
+
+
+    }; 
+
+    $scope.prevMonth = function() {
+
+      var anno = $scope.calendario.anno;
+      var mese = $scope.calendario.meseNN;
+
+      var now = new Date(anno, mese, 1);
+
+      
+
+      if (now.getMonth() == 0) {
+          var current = new Date(now.getFullYear() - 1, 11, 1);
+      } else {
+          var current = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      }
+
+      var year = current.getFullYear();
+      var month = current.getMonth();
+
+      $scope.calendario = Util.getCalendar(year,month);
+
+
+    };  
 
     
 });

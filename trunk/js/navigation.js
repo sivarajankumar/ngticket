@@ -3,7 +3,7 @@ angular.module('ticket.navigation', [])
 
   $stateProvider
       .state('ticket', {
-        url: '/uno',
+        url: '/uno:giorno:mese:anno',
         templateUrl : 'ticket.html',
         controller : "ticketCtrl" 
       })
