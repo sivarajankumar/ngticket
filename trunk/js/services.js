@@ -44,6 +44,18 @@ angular.module('ticket.services', ['ticket.config'])
         title: projectTitle,
         tasks: []
       };
+    },
+    saveDay: function(day) {
+      window.localStorage['day'] = angular.toJson(day);
+    },
+    getDay: function() {
+      var dayString = window.localStorage['day'];
+      if(dayString) {
+        day = angular.fromJson(dayString);
+        
+        return day;
+      }
+      return '';
     }/*,
     getLastActiveIndex: function() {
       return parseInt(window.localStorage['lastActiveProject']) || 0;
