@@ -90,7 +90,7 @@
                   <ion-item class="item-stable"
                             ng-click="toggleGroup(group)"
                             ng-class="{active: isGroupShown(group)}">                                        
-                    {{group.month}}&nbsp;{{group.yyyyy}}<span class="badge badge-assertive">{{group.items.length}}</span>
+                    {{group.month}}&nbsp;{{group.yyyy}}<span class="badge badge-assertive">{{group.items.length}}</span>
                   </ion-item>
                   <ion-item class="item-accordion"
                             ng-repeat="item in group.items"
@@ -107,7 +107,7 @@
 
     <script id="calendario.html" type="text/ng-template">
       <!-- The title of the ion-view will be shown on the navbar -->
-      <ion-view title="{{calendario.mese}}&nbsp;{{calendario.anno}}">
+      <ion-view title="{{calendarSlides[$index].mese}}&nbsp;{{calendario.anno}}">
                 
         <ion-nav-buttons side="left">
          <a class="button icon ion-ios7-arrow-back" ui-sref="ticket"></a>
@@ -116,68 +116,72 @@
          <a class="button icon ion-ios7-arrow-right" ui-sref="ticket"></a>
         </ion-nav-buttons>
         <ion-content>
+          <ion-slide-box show-pager="false" active-slide="5" on-slide-changed="slideChanged($index)" > 
+            
+              <ion-slide  ng-repeat="calendario in calendarSlides">
 
-          <div class="row">
-            <div class="col">D</div>
-            <div class="col">L</div>
-            <div class="col">M</div>
-            <div class="col">M</div>
-            <div class="col">G</div>
-            <div class="col">V</div>
-            <div class="col">S</div>
-          </div>
-          <div class="row">
-            <div class="col"><a ui-sref="ticket({giorno : calendario.giorni[0], mese : calendario.meseNN, anno : calendario.anno })">{{calendario.giorni[0]}}</a></div>
-            <div class="col">{{calendario.giorni[1]}}</div>
-            <div class="col">{{calendario.giorni[2]}}</div>
-            <div class="col">{{calendario.giorni[3]}}</div>
-            <div class="col">{{calendario.giorni[4]}}</div>
-            <div class="col">{{calendario.giorni[5]}}</div>
-            <div class="col">{{calendario.giorni[6]}}</div>
-          </div>
-          <div class="row">
-            <div class="col">{{calendario.giorni[7]}}</div>
-            <div class="col">{{calendario.giorni[8]}}</div>
-            <div class="col">{{calendario.giorni[9]}}</div>
-            <div class="col">{{calendario.giorni[10]}}</div>
-            <div class="col">{{calendario.giorni[11]}}</div>
-            <div class="col">{{calendario.giorni[12]}}</div>
-            <div class="col">{{calendario.giorni[13]}}</div>
-          </div>
-          <div class="row">
-            <div class="col">{{calendario.giorni[14]}}</div>
-            <div class="col">{{calendario.giorni[15]}}</div>
-            <div class="col">{{calendario.giorni[16]}}</div>
-            <div class="col">{{calendario.giorni[17]}}</div>
-            <div class="col">{{calendario.giorni[18]}}</div>
-            <div class="col">{{calendario.giorni[19]}}</div>
-            <div class="col">{{calendario.giorni[20]}}</div>
-          </div>
-          <div class="row">
-            <div class="col">{{calendario.giorni[21]}}</div>
-            <div class="col">{{calendario.giorni[22]}}</div>
-            <div class="col">{{calendario.giorni[23]}}</div>
-            <div class="col">{{calendario.giorni[24]}}</div>
-            <div class="col">{{calendario.giorni[25]}}</div>
-            <div class="col">{{calendario.giorni[26]}}</div>
-            <div class="col">{{calendario.giorni[27]}}</div>
-          </div>                    
-          <div class="row">
-            <div class="col">{{calendario.giorni[28]}}</div>
-            <div class="col">{{calendario.giorni[29]}}</div>
-            <div class="col">{{calendario.giorni[30]}}</div>
-            <div class="col">{{calendario.giorni[31]}}</div>
-            <div class="col">{{calendario.giorni[32]}}</div>
-            <div class="col">{{calendario.giorni[33]}}</div>
-            <div class="col">{{calendario.giorni[34]}}</div>
-          </div>  
-                               
+                  <div class="row">
+                    <div class="col">D</div>
+                    <div class="col">L</div>
+                    <div class="col">M</div>
+                    <div class="col">M</div>
+                    <div class="col">G</div>
+                    <div class="col">V</div>
+                    <div class="col">S</div>
+                  </div>
+                  <div class="row">
+                    <div class="col"><a ng-click="setDay(calendario.giorni[0], calendario.meseNN, calendario.anno)">{{calendario.giorni[0]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[1], calendario.meseNN, calendario.anno)">{{calendario.giorni[1]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[2], calendario.meseNN, calendario.anno)">{{calendario.giorni[2]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[3], calendario.meseNN, calendario.anno)">{{calendario.giorni[3]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[4], calendario.meseNN, calendario.anno)">{{calendario.giorni[4]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[5], calendario.meseNN, calendario.anno)">{{calendario.giorni[5]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[6], calendario.meseNN, calendario.anno)">{{calendario.giorni[6]}}</a></div>
+                  </div>
+                  <div class="row">
+                    <div class="col"><a ng-click="setDay(calendario.giorni[7], calendario.meseNN, calendario.anno)">{{calendario.giorni[7]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[8], calendario.meseNN, calendario.anno)">{{calendario.giorni[8]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[9], calendario.meseNN, calendario.anno)">{{calendario.giorni[9]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[10], calendario.meseNN, calendario.anno)">{{calendario.giorni[10]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[11], calendario.meseNN, calendario.anno)">{{calendario.giorni[11]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[12], calendario.meseNN, calendario.anno)">{{calendario.giorni[12]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[13], calendario.meseNN, calendario.anno)">{{calendario.giorni[13]}}</a></div>
+                  </div>
+                  <div class="row">
+                    <div class="col"><a ng-click="setDay(calendario.giorni[14], calendario.meseNN, calendario.anno)">{{calendario.giorni[14]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[15], calendario.meseNN, calendario.anno)">{{calendario.giorni[15]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[16], calendario.meseNN, calendario.anno)">{{calendario.giorni[16]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[17], calendario.meseNN, calendario.anno)">{{calendario.giorni[17]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[18], calendario.meseNN, calendario.anno)">{{calendario.giorni[18]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[19], calendario.meseNN, calendario.anno)">{{calendario.giorni[19]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[20], calendario.meseNN, calendario.anno)">{{calendario.giorni[20]}}</a></div>
+                  </div>
+                  <div class="row">
+                    <div class="col"><a ng-click="setDay(calendario.giorni[21], calendario.meseNN, calendario.anno)">{{calendario.giorni[21]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[22], calendario.meseNN, calendario.anno)">{{calendario.giorni[22]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[23], calendario.meseNN, calendario.anno)">{{calendario.giorni[23]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[24], calendario.meseNN, calendario.anno)">{{calendario.giorni[24]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[25], calendario.meseNN, calendario.anno)">{{calendario.giorni[25]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[26], calendario.meseNN, calendario.anno)">{{calendario.giorni[26]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[27], calendario.meseNN, calendario.anno)">{{calendario.giorni[27]}}</a></div>
+                  </div>                    
+                  <div class="row">
+                    <div class="col"><a ng-click="setDay(calendario.giorni[28], calendario.meseNN, calendario.anno)">{{calendario.giorni[28]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[29], calendario.meseNN, calendario.anno)">{{calendario.giorni[29]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[30], calendario.meseNN, calendario.anno)">{{calendario.giorni[30]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[31], calendario.meseNN, calendario.anno)">{{calendario.giorni[31]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[32], calendario.meseNN, calendario.anno)">{{calendario.giorni[32]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[33], calendario.meseNN, calendario.anno)">{{calendario.giorni[33]}}</a></div>
+                    <div class="col"><a ng-click="setDay(calendario.giorni[34], calendario.meseNN, calendario.anno)">{{calendario.giorni[34]}}</a></div>
+                  </div>  
+                </ion-slide>      
+              </ion-slide-box>           
 
         </ion-content>
 
         <div class="bar bar-footer bar-stable">
           <button class="button icon ion-ios7-arrow-back" ng-click="prevMonth()"></button>
-          <div class="title">mese</div>
+          <div class="title">{{anno}}&nbsp;{{mese}}</div>
           <button class="button icon ion-ios7-arrow-right" ng-click="nextMonth()"></button>
         </div>
 
