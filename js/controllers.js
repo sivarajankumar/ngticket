@@ -67,26 +67,23 @@ angular.module('ticket.controllers', ['ticket.services'])
 
 
 
-.controller('ticketCtrl', function($scope,  Util, localTicketFactory,$ionicSlideBoxDelegate,$timeout,$state, $stateParams ) {
+.controller('ticketCtrl', function($scope,  Util, localTicketFactory,$ionicSlideBoxDelegate,$timeout,$state ) {
 
 
+  
 
-  console.log($stateParams.giorno);
-  console.log($stateParams.mese);
-  console.log($stateParams.anno);
+  var giornoSelezionato = localTicketFactory.getDay();
 
-  var giornoSelezionato;
-
-  if ($stateParams.giorno == ''){
-      giornoSelezionato = new Date();
+  if (giornoSelezionato == ''){
+      giorno = new Date();
   } else {
-      giornoSelezionato = new Date($stateParams.anno,$stateParams.mese,$stateParams.giorno);
+      giorno = new Date(giornoSelezionato.y,giornoSelezionato.m,giornoSelezionato.d);
   }
 
   if(typeof $scope.slides == 'undefined'){
     $scope.slides=[];
     
-    $scope.oggi = Util.renderDay(giornoSelezionato);
+    $scope.oggi = Util.renderDay(giorno);
     mese = ($scope.oggi.mm - 1);
     $scope.slides = Util.createMonth( mese  , $scope.oggi.yyyy);
     $currentSlideIndex = ($scope.oggi.dd - 1);
@@ -138,7 +135,7 @@ angular.module('ticket.controllers', ['ticket.services'])
 
 
 
-.controller('CalendarCtrl', function($scope, Util) {
+.controller('CalendarCtrl', function($scope,$state, Util, localTicketFactory) {
 
     // these are labels for the days of the week
     // these are labels for the days of the week
@@ -173,6 +170,13 @@ angular.module('ticket.controllers', ['ticket.services'])
 
 
     $scope.calendario = Util.getCalendar(year,month);
+
+    $scope.calendarSlides = [];
+
+    for (i=0; i < 12; i++){
+        var cal = Util.getCalendar(year,i);
+        $scope.calendarSlides.push(cal);
+    }
     
     $scope.nextMonth = function() {
 
@@ -222,6 +226,23 @@ angular.module('ticket.controllers', ['ticket.services'])
 
     };  
 
+    $scope.setDay = function(d,m,y) {
+
+
+
+      localTicketFactory.saveDay({d : d, m :m , y : y});
+      $state.transitionTo("ticket");
+
+
+    };  
+
+    $scope.slideChanged = function(index) {
+
+      $scope.mese = $scope.calendarSlides[index].mese;
+      $scope.anno = $scope.calendarSlides[index].anno;
+
+
+  } 
     
 });
 
