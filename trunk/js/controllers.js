@@ -80,13 +80,13 @@ angular.module('ticket.controllers', ['ticket.services'])
   if ($stateParams.giorno == ''){
       giornoSelezionato = new Date();
   } else {
-      giornoSelezionato = new Date($stateParams.giorno,$stateParams.mese,$stateParams.anno);
+      giornoSelezionato = new Date($stateParams.anno,$stateParams.mese,$stateParams.giorno);
   }
 
   if(typeof $scope.slides == 'undefined'){
     $scope.slides=[];
     
-    $scope.oggi = Util.today();
+    $scope.oggi = Util.renderDay(giornoSelezionato);
     mese = ($scope.oggi.mm - 1);
     $scope.slides = Util.createMonth( mese  , $scope.oggi.yyyy);
     $currentSlideIndex = ($scope.oggi.dd - 1);
