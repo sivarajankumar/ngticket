@@ -1,6 +1,6 @@
 angular.module('ticket.controllers', ['ticket.services'])
 
-.controller('listaTicketCtrl', function($scope,  Util, localTicketFactory) {
+.controller('listaTicketCtrl', function($scope ,  Util, localTicketFactory) {
 
 
   function refresh () { 
@@ -43,6 +43,8 @@ angular.module('ticket.controllers', ['ticket.services'])
   
   refresh();
 
+
+
   $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
       $scope.shownGroup = null;
@@ -67,26 +69,32 @@ angular.module('ticket.controllers', ['ticket.services'])
 
 
 
-.controller('ticketCtrl', function($scope,  Util, localTicketFactory,$ionicSlideBoxDelegate,$timeout,$state ) {
+.controller('ticketCtrl', function($scope, $stateParams,  Util, localTicketFactory,$ionicSlideBoxDelegate,$timeout,$state) {
 
+  var year = $stateParams.year; //getting fooVal
+  var month = $stateParams.month; //getting barVal
+  var day = $stateParams.day; //getting barVal
+  //..
+  $scope.state = $state.current
+  $scope.params = $stateParams; 
 
-  
-
-  var giornoSelezionato = localTicketFactory.getDay();
-
-  if (giornoSelezionato == ''){
-      giorno = new Date();
-  } else {
-      giorno = new Date(giornoSelezionato.y,giornoSelezionato.m,giornoSelezionato.d);
-  }
+  console.log(year);
+  console.log(month);
+  console.log(day);
 
   if(typeof $scope.slides == 'undefined'){
     $scope.slides=[];
     
-    $scope.oggi = Util.renderDay(giorno);
+    if (day == null){
+       $scope.oggi = Util.today();
+    } else {
+       $scope.oggi = Util.getDayForTicket(year,month,day);
+    }
     mese = ($scope.oggi.mm - 1);
-    $scope.slides = Util.createMonth( mese  , $scope.oggi.yyyy);
-    $currentSlideIndex = ($scope.oggi.dd - 1);
+    //$scope.slides = Util.createMonth( mese  , $scope.oggi.yyyy);
+    $scope.slides = Util.createSlides($scope.oggi);
+    
+    $currentSlideIndex = 14;
 
   }
 
@@ -135,114 +143,65 @@ angular.module('ticket.controllers', ['ticket.services'])
 
 
 
-.controller('CalendarCtrl', function($scope,$state, Util, localTicketFactory) {
+.controller('CalendarCtrl', function($scope, $state, $stateParams, Util) {
 
-    // these are labels for the days of the week
-    // these are labels for the days of the week
-    cal_days_labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-    // these are human-readable month name labels, in order
-    cal_months_labels = ['January', 'February', 'March', 'April',
-                         'May', 'June', 'July', 'August', 'September',
-                         'October', 'November', 'December'];
-
-    // these are the days of the week for each month, in order
-    cal_days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-
-    $scope.calendario = {
-             anno : ''
-           , mese : ''
-           , meseNN : 0
-           , giorni : []
-
-    };
-
-    
-// this is the current date
     cal_current_date = new Date(); 
 
-    var month ;
+    var month;
     var year;
 
     month = (isNaN(month) || month == null) ? cal_current_date.getMonth() : month;
     year  = (isNaN(year) || year == null) ? cal_current_date.getFullYear() : year;
 
-
     $scope.calendario = Util.getCalendar(year,month);
 
-    $scope.calendarSlides = [];
 
-    for (i=0; i < 12; i++){
-        var cal = Util.getCalendar(year,i);
-        $scope.calendarSlides.push(cal);
-    }
-    
     $scope.nextMonth = function() {
+     
 
-      var anno = $scope.calendario.anno;
-      var mese = $scope.calendario.meseNN;
-
-      var now = new Date(anno, mese, 1);
-
-      
-
-      if (now.getMonth() == 11) {
-          var current = new Date(now.getFullYear() + 1, 0, 1);
-      } else {
-          var current = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-      }
-
-      var year = current.getFullYear();
-      var month = current.getMonth();
-
-      $scope.calendario = Util.getCalendar(year,month);
-
-      
+         var firstDay = new Date($scope.calendario.anno, $scope.calendario.month, 1);
+         
+         if (firstDay.getMonth() == 11) {
+              var current = new Date(firstDay.getFullYear() + 1, 0, 1);
+         } else {
+              var current = new Date(firstDay.getFullYear(), firstDay.getMonth() + 1, 1);
+         }
 
 
-    }; 
+         var month;
+         var year;
 
-    $scope.prevMonth = function() {
+         month = (isNaN(month) || month == null) ? current.getMonth() : month;
+         year  = (isNaN(year) || year == null) ? current.getFullYear() : year;
 
-      var anno = $scope.calendario.anno;
-      var mese = $scope.calendario.meseNN;
+         $scope.calendario = Util.getCalendar(year,month);
 
-      var now = new Date(anno, mese, 1);
+    };
 
-      
+    $scope.previousMonth = function() {
 
-      if (now.getMonth() == 0) {
-          var current = new Date(now.getFullYear() - 1, 11, 1);
-      } else {
-          var current = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-      }
-
-      var year = current.getFullYear();
-      var month = current.getMonth();
-
-      $scope.calendario = Util.getCalendar(year,month);
+         var firstDay = new Date($scope.calendario.anno, $scope.calendario.month, 1);
+         
+         if (firstDay.getMonth() == 0) {
+              var current = new Date(firstDay.getFullYear() - 1, 0, 1);
+         } else {
+              var current = new Date(firstDay.getFullYear(), firstDay.getMonth() - 1, 1);
+         }
 
 
-    };  
+         var month;
+         var year;
 
-    $scope.setDay = function(d,m,y) {
+         month = (isNaN(month) || month == null) ? current.getMonth() : month;
+         year  = (isNaN(year) || year == null) ? current.getFullYear() : year;
 
+         $scope.calendario = Util.getCalendar(year,month);
+         
+         $state.reload();
+    };
+  }
+  
 
-
-      localTicketFactory.saveDay({d : d, m :m , y : y});
-      $state.transitionTo("ticket");
-
-
-    };  
-
-    $scope.slideChanged = function(index) {
-
-      $scope.mese = $scope.calendarSlides[index].mese;
-      $scope.anno = $scope.calendarSlides[index].anno;
-
-
-  } 
     
-});
+);
 
