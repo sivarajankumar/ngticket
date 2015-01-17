@@ -183,7 +183,7 @@ angular.module('ticket.controllers', ['ticket.services'])
          var firstDay = new Date($scope.calendario.anno, $scope.calendario.month, 1);
          
          if (firstDay.getMonth() == 0) {
-              var current = new Date(firstDay.getFullYear() - 1, 0, 1);
+              var current = new Date(firstDay.getFullYear() - 1, 11, 1);
          } else {
               var current = new Date(firstDay.getFullYear(), firstDay.getMonth() - 1, 1);
          }
