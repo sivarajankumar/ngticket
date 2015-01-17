@@ -16,6 +16,21 @@ angular.module('ticket.services', ['ticket.config'])
       }
       return [];
     },
+    ticketDays: function(yyyymm) {
+      var ticketString = window.localStorage['tickets'];
+      if(ticketString) {
+        tickets = angular.fromJson(ticketString);
+        tickets.sort(function(a, b){return b-a});
+        ticketsForMonth = [];
+        for (i=0; i  < tickets.length; i++){
+            if (tickets[i].substr(0,6)==yyyymm){
+                ticketsForMonth.push(tickets[i].substr(6,8));
+            }
+        }
+        return ticketsForMonth;
+      }
+      return [];
+    },
     save: function(tickets) {
       window.localStorage['tickets'] = angular.toJson(tickets);
     },
@@ -54,7 +69,7 @@ angular.module('ticket.services', ['ticket.config'])
   }
 }) 
 
-.factory('Util', function(){
+.factory('Util', function(localTicketFactory){
 
   return{
 
@@ -208,12 +223,12 @@ angular.module('ticket.services', ['ticket.config'])
 
 
             // these are labels for the days of the week
-            var cal_days_labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            var cal_days_labels = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
 
             // these are human-readable month name labels, in order
-            var cal_months_labels = ['January', 'February', 'March', 'April',
-                                 'May', 'June', 'July', 'August', 'September',
-                                 'October', 'November', 'December'];
+            var cal_months_labels = ['gennaio', 'fabbraio', 'marzo', 'aprile',
+                                 'maggio', 'giugno', 'luglio', 'agosto', 'settembre',
+                                 'ottobre', 'novembre', 'dicembre'];
 
             // these are the days of the week for each month, in order
             var cal_days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -250,6 +265,12 @@ angular.module('ticket.services', ['ticket.config'])
             calendario.anno = year;
             calendario.mese = monthName;
             calendario.month = month;
+
+            strMonth = (month+1);
+
+            if (strMonth < 10 ){strMonth = '0'+strMonth;}
+
+            ticketsThisMonth = localTicketFactory.ticketDays(year+strMonth);
           
             // fill in the days
             var day = 1;
@@ -259,7 +280,17 @@ angular.module('ticket.services', ['ticket.config'])
               for (var j = 0; j <= 6; j++) { 
                 
                 if (day <= monthLength && (i > 0 || j >= startingDay)) {
-                  calendario.giorni.push(''+day+'');
+
+                  dayStr = ''+day;
+                  if (day < 10){dayStr = '0'+dayStr}
+
+                  usatoTicket = 'unUsed';
+                  if (ticketsThisMonth.indexOf(dayStr) > -1){
+                     usatoTicket = 'used';
+                  } 
+
+                  giorno = {numero:day,ticket:usatoTicket}
+                  calendario.giorni.push(giorno);
                   day++;
                 } else {
                   calendario.giorni.push('');
