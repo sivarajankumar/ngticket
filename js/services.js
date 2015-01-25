@@ -5,6 +5,26 @@ angular.module('ticket.services', ['ticket.config'])
  * from local storage, and also lets us save and load the
  * last active project index.
  */
+
+ .service( 'HardwareBackButtonManager', function($ionicPlatform){
+  this.deregister = undefined;
+ 
+  this.disable = function(){
+    this.deregister = $ionicPlatform.registerBackButtonAction(function(e){
+  e.preventDefault();
+  return false;
+    }, 101);
+  }
+ 
+  this.enable = function(){
+    if( this.deregister !== undefined ){
+      this.deregister();
+      this.deregister = undefined;
+    }
+  }
+  return this;
+})
+
 .factory('localTicketFactory', function() {
   return {
     all: function() {
@@ -238,7 +258,7 @@ angular.module('ticket.services', ['ticket.config'])
                      anno : ''
                    , mese : ''
                    , month : 0
-                   , giorni : []
+                   , weeks : []
 
             };
 
@@ -270,38 +290,59 @@ angular.module('ticket.services', ['ticket.config'])
 
             if (strMonth < 10 ){strMonth = '0'+strMonth;}
 
-            ticketsThisMonth = localTicketFactory.ticketDays(year+strMonth);
+            ticketsThisMonth = localTicketFactory.ticketDays(year+''+strMonth);
           
             // fill in the days
             var day = 1;
+
+            var weeks = [];
             // this loop is for is weeks (rows)
             for (var i = 0; i < 9; i++) {
+
+              var giorni=[];
               // this loop is for weekdays (cells)
               for (var j = 0; j <= 6; j++) { 
+
+                giorno = {
+                      numero: ''
+                    , ticket:'unUsed'
+                }
                 
                 if (day <= monthLength && (i > 0 || j >= startingDay)) {
 
-                  dayStr = ''+day;
-                  if (day < 10){dayStr = '0'+dayStr}
+                  // metto uno zero davanti al numero
+
+                  dayStr = (day<10)?'0'+day:''+day;
+                  
+                  // il giorno esiste tra i giorni in cui ho usato il ticket ?
 
                   usatoTicket = 'unUsed';
                   if (ticketsThisMonth.indexOf(dayStr) > -1){
                      usatoTicket = 'used';
                   } 
 
-                  giorno = {numero:day,ticket:usatoTicket}
-                  calendario.giorni.push(giorno);
+                  giorno.numero = day; 
+                  giorno.ticket = usatoTicket;
+                  
                   day++;
-                } else {
-                  calendario.giorni.push('');
-                }
+                } 
+
+                giorni.push(giorno);
               
               }
+
+              weeks.push(giorni);
+
               // stop making rows if we've run out of days
+              
               if (day > monthLength) {
                    break;
               } 
+
+
             }
+
+            calendario.weeks = weeks;
 
             return calendario;
 

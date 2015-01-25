@@ -4,17 +4,17 @@ angular.module('ticket.navigation', [])
   $stateProvider
       .state('ticket', {
         url: '/uno:year?month?day',
-        templateUrl : 'ticket.html',
+        templateUrl : 'partials/ticket.html',
         controller : "ticketCtrl" 
       })
       .state('listaTicket', {
         url: '/due',
-        templateUrl: 'listaTicket.html',
+        templateUrl: 'partials/listaTicket.html',
         controller : "listaTicketCtrl" 
       })
       .state('calendario', {
         url: '/tre',
-        templateUrl: 'calendario.html',
+        templateUrl: 'partials/calendario.html',
         controller : "CalendarCtrl"
       })
   

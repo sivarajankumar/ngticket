@@ -69,7 +69,7 @@ angular.module('ticket.controllers', ['ticket.services'])
 
 
 
-.controller('ticketCtrl', function($scope, $stateParams,  Util, localTicketFactory,$ionicSlideBoxDelegate,$timeout,$state) {
+.controller('ticketCtrl', function($scope, $stateParams,  Util, localTicketFactory,$ionicSlideBoxDelegate,$timeout,$state,HardwareBackButtonManager) {
 
   var year = $stateParams.year; //getting fooVal
   var month = $stateParams.month; //getting barVal
@@ -82,58 +82,47 @@ angular.module('ticket.controllers', ['ticket.services'])
   console.log(month);
   console.log(day);
 
-  if(typeof $scope.slides == 'undefined'){
-    $scope.slides=[];
-    
-    if (day == null){
+  if (day == null){
        $scope.oggi = Util.today();
-    } else {
+  } else {
        $scope.oggi = Util.getDayForTicket(year,month,day);
-    }
-    mese = ($scope.oggi.mm - 1);
-    //$scope.slides = Util.createMonth( mese  , $scope.oggi.yyyy);
-    $scope.slides = Util.createSlides($scope.oggi);
-    
-    $currentSlideIndex = 14;
+  }
+
+  $scope.hasTicket = function(){
+
+       mese = ($scope.oggi.mm<10)?'0'+$scope.oggi.mm:$scope.oggi.mm;
+       giorno = ($scope.oggi.dd<10)?'0'+$scope.oggi.dd:$scope.oggi.dd+'';
+
+       tickets =  localTicketFactory.ticketDays($scope.oggi.yyyy+''+mese);
+       if (tickets.indexOf(giorno) > -1){
+           return true;
+       }
+       return false;
 
   }
 
-
-
-
   $scope.insertTicket = function() {
 
-      var giornoDaInserire = $scope.slides[$currentSlideIndex];
+      var giornoDaInserire = $scope.oggi;
       var stringaDaInserire = Util.formatDateForDB (giornoDaInserire.dd,giornoDaInserire.mm,giornoDaInserire.yyyy);
 
       localTicketFactory.add(stringaDaInserire);
-      $state.transitionTo("listaTicket");
+
+      $state.transitionTo("calendario");
   };
 
-  $scope.incrementDate = function() {
+  $scope.removeTicket = function() {
 
-      var dd1 = new Date($scope.oggi.yyyy,$scope.oggi.mm,$scope.oggi.dd);
-      var nextDay = new Date(dd1);
-      nextDay.setDate(nextDay.getDate()+1);      
-      $scope.oggi = Util.renderDay(nextDay);
-  };
+      var giornoDaInserire = $scope.oggi;
+      var stringaDaInserire = Util.formatDateForDB (giornoDaInserire.dd,giornoDaInserire.mm,giornoDaInserire.yyyy);
 
-  $scope.decrementDate = function() {
+      localTicketFactory.remove(stringaDaInserire);
 
-      var dd1 = new Date($scope.oggi.yyyy,$scope.oggi.mm,$scope.oggi.dd);
-      var nextDay = new Date(dd1);
-      nextDay.setDate(nextDay.getDate()-1);
-      $scope.oggi = Util.renderDay(nextDay);
-
+      $state.transitionTo("calendario");
   };
 
 
- 
-  $scope.slideChanged = function(index) {
-      $currentSlideIndex = index;
-
-
-  } 
+  HardwareBackButtonManager.disable();
 
 
 
@@ -197,7 +186,7 @@ angular.module('ticket.controllers', ['ticket.services'])
 
          $scope.calendario = Util.getCalendar(year,month);
          
-         $state.reload();
+         
     };
   }
   
