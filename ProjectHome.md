@@ -1,0 +1,1 @@
+a simple angularjs to manager ticket usage
